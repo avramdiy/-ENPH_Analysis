@@ -10,6 +10,14 @@
 
 ### 2nd Commit
 
+- Assign all values to their corresponding attributes.
+
+- Reorder Date values to show the year last.
+
+- Show rows with data from 11-10-2012 to 11-10-2012
+
+- Remove "OpenInt" column
+
 ### 3rd Commit
 
 ### 4th Commit
