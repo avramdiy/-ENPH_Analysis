@@ -1,7 +1,9 @@
-from flask import Flask, render_template_string
+from flask import Flask, render_template_string, Response
 import pandas as pd
 import os
 import csv
+import matplotlib.pyplot as plt
+import io
 
 app = Flask(__name__)
 
@@ -35,8 +37,8 @@ def display_table():
             return f"Error parsing 'Date' column: {str(e)}", 400
 
         # Filter rows based on the specified date range
-        start_date = pd.to_datetime('2012-11-10')  # Start date in datetime format
-        end_date = pd.to_datetime('2017-11-10')    # End date in datetime format
+        start_date = pd.to_datetime('2013-01-01')  # Start date in datetime format
+        end_date = pd.to_datetime('2016-12-31')    # End date in datetime format
         df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
 
         # Reorder date to 'MM-DD-YYYY' format
@@ -73,6 +75,48 @@ def display_table():
     </html>
     """
     return render_template_string(template)
+
+@app.route('/quarterly')
+def plot_quarterly_open():
+    if not os.path.exists(FILE_PATH):
+        return "File not found. Please check the file path.", 404
+
+    try:
+        with open(FILE_PATH, 'r') as file:
+            sample = file.read(1024)
+            detected_delimiter = csv.Sniffer().sniff(sample).delimiter
+        
+        df = pd.read_csv(FILE_PATH, delimiter=detected_delimiter)
+
+        if 'Date' not in df.columns or 'Open' not in df.columns:
+            return "The file does not contain the required columns.", 400
+
+        df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
+        df = df[(df['Date'] >= '2013-01-01') & (df['Date'] <= '2016-12-31')]
+
+        # Resample to quarterly average "Open" price
+        df.set_index('Date', inplace=True)
+        quarterly_open = df['Open'].resample('Q').mean()
+
+        # Plot the data
+        plt.figure(figsize=(10, 6))
+        quarterly_open.plot(kind='line', marker='o', color='blue')
+        plt.title("Quarterly Average Open Price (2013-2016)")
+        plt.xlabel("Quarter")
+        plt.ylabel("Average Open Price")
+        plt.grid(True)
+        plt.tight_layout()
+
+        # Save the plot to a BytesIO buffer
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+        plt.close()
+
+        return Response(buf, mimetype='image/png')
+
+    except Exception as e:
+        return f"Error processing the file: {str(e)}", 500    
 
 if __name__ == '__main__':
     # Check for file existence before running the app

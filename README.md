@@ -20,6 +20,10 @@
 
 ### 3rd Commit
 
+- Filter dates further to show the beginning of 2013 to the end of 2016 for more accurate data.
+
+- Create a plot and route to calculate and visualize the quarterly "Open" price using the dates from 2013 to 2016.
+
 ### 4th Commit
 
 ### 5th Commit
