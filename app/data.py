@@ -97,11 +97,13 @@ def plot_quarterly_open():
         # Resample to quarterly average "Open" price
         df.set_index('Date', inplace=True)
         quarterly_open = df['Open'].resample('Q').mean()
+        quarterly_low = df['Low'].resample('Q').mean()
 
         # Plot the data
         plt.figure(figsize=(10, 6))
         quarterly_open.plot(kind='line', marker='o', color='blue')
-        plt.title("Quarterly Average Open Price (2013-2016)")
+        quarterly_low.plot(kind='line', marker='o', color='red')
+        plt.title("Quarterly Average Prices (2013-2016)")
         plt.xlabel("Quarter")
         plt.ylabel("Average Open Price")
         plt.grid(True)

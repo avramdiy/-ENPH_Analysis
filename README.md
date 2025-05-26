@@ -26,4 +26,6 @@
 
 ### 4th Commit
 
+- Adjusted /quarterly route to show the Quarterly Low Averages as well.
+
 ### 5th Commit
