@@ -29,3 +29,11 @@
 - Adjusted /quarterly route to show the Quarterly Low Averages as well.
 
 ### 5th Commit
+
+- Adjust /quarterly route to show Quarterly High Average Price.
+
+- Added a legend for better communication.
+
+- This analysis shows short-term growth and sell action. I would say this short time frame establishes two historical support levels for further analysis. The $7-8 range, $4-5 range, and the $1-2 range.
+
+- Fin.

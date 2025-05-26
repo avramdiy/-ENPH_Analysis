@@ -98,15 +98,18 @@ def plot_quarterly_open():
         df.set_index('Date', inplace=True)
         quarterly_open = df['Open'].resample('Q').mean()
         quarterly_low = df['Low'].resample('Q').mean()
+        quarterly_high = df['High'].resample('Q').mean()
 
         # Plot the data
         plt.figure(figsize=(10, 6))
         quarterly_open.plot(kind='line', marker='o', color='blue')
         quarterly_low.plot(kind='line', marker='o', color='red')
+        quarterly_high.plot(kind='line', marker='o', color='green')
         plt.title("Quarterly Average Prices (2013-2016)")
         plt.xlabel("Quarter")
-        plt.ylabel("Average Open Price")
+        plt.ylabel("Average Prices")
         plt.grid(True)
+        plt.legend(loc='upper right')
         plt.tight_layout()
 
         # Save the plot to a BytesIO buffer
